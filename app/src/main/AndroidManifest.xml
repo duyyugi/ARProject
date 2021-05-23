@@ -22,7 +22,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MaterialComponents.Light.NoActionBar"
         android:usesCleartextTraffic="true">
-        <activity android:name=".testInput"></activity>
+        <activity android:name=".LearnActivity"></activity>
+        <activity android:name=".testInput" />
         <activity android:name=".AccountActivity" />
         <activity android:name=".LessonListAcitivity" />
         <activity android:name=".HomePageActivity" />

@@ -1,14 +1,14 @@
 package com.example.arproject.responseModel;
 
-public class DangNhapResponse {
+public class LoginResponse {
     private String token;
     private String status;
-    private String TenDangNhap;
+    private String username;
 
-    public DangNhapResponse(String token, String status, String tenDangNhap) {
+    public LoginResponse(String token, String status, String username) {
         this.token = token;
         this.status = status;
-        TenDangNhap = tenDangNhap;
+        this.username = username;
     }
 
     public String getToken() {
@@ -27,11 +27,11 @@ public class DangNhapResponse {
         this.status = status;
     }
 
-    public String getTenDangNhap() {
-        return TenDangNhap;
+    public String getUsername() {
+        return username;
     }
 
-    public void setTenDangNhap(String tenDangNhap) {
-        TenDangNhap = tenDangNhap;
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

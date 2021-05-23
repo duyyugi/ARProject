@@ -8,22 +8,22 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.example.arproject.R;
-import com.example.arproject.model.BaiGiang;
+import com.example.arproject.model.Lesson;
 
 import java.util.List;
 
-public class BaiGiangAdapter extends BaseAdapter {
+public class LessonAdapter extends BaseAdapter {
     Context myContext;
     int myLayout;
-    List<BaiGiang> arrayBaiGiang;
-    public BaiGiangAdapter(Context context, int layout, List<BaiGiang> baiGiangList){
+    List<Lesson> arrayLesson;
+    public LessonAdapter(Context context, int layout, List<Lesson> lessonList){
         myContext = context;
         myLayout = layout;
-        arrayBaiGiang = baiGiangList;
+        arrayLesson = lessonList;
     }
     @Override
     public int getCount() {
-        return arrayBaiGiang.size();
+        return arrayLesson.size();
     }
 
     @Override
@@ -40,10 +40,10 @@ public class BaiGiangAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) myContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         convertView = inflater.inflate(myLayout, null);
-        TextView txtTenBaiGiang = (TextView) convertView.findViewById(R.id.textViewTenBaiGiang);
-        txtTenBaiGiang.setText(arrayBaiGiang.get(position).Ten);
-        TextView txtTenGiaoVien = (TextView) convertView.findViewById(R.id.textViewTenGiaoVien);
-        txtTenGiaoVien.setText(String.valueOf(arrayBaiGiang.get(position).TenGiaoVien));
+        TextView txvLessonName = (TextView) convertView.findViewById(R.id.textViewLessonName);
+        txvLessonName.setText(arrayLesson.get(position).name);
+        TextView txvTecherName = (TextView) convertView.findViewById(R.id.textViewTeacherName);
+        txvTecherName.setText(String.valueOf(arrayLesson.get(position).teacherName));
         return convertView;
     }
 }

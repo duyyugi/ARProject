@@ -1,5 +1,6 @@
 package com.example.arproject.model;
 
+import com.example.arproject.LearnActivity;
 import com.example.arproject.MainActivity;
 import com.google.ar.core.Config;
 import com.google.ar.core.Session;
@@ -12,8 +13,8 @@ public class CustomArFragment extends ArFragment {
         config.setUpdateMode(Config.UpdateMode.LATEST_CAMERA_IMAGE);
         config.setFocusMode(Config.FocusMode.AUTO);
         session.configure(config);
-//        this.getArSceneView().setupSession(session);
-//        ((MainActivity)getActivity()).setupDatabase(config,session);
+        this.getArSceneView().setupSession(session);
+        ((LearnActivity)getActivity()).setupDatabase(config,session);
         return config;
     }
 }

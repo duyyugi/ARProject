@@ -3,7 +3,6 @@ package com.example.arproject;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.PreferenceManager;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -15,14 +14,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.arproject.adapter.BaiGiangAdapter;
+import com.example.arproject.adapter.LessonAdapter;
 import com.example.arproject.api.ApiService;
-import com.example.arproject.model.BaiGiang;
-import com.example.arproject.model.MyCustomDialog;
-import com.example.arproject.responseModel.LayDSBGResponse;
+import com.example.arproject.model.Lesson;
+import com.example.arproject.model.Marker;
+import com.example.arproject.model.AddLessonDialog;
+import com.example.arproject.responseModel.GetMarkerListResponse;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -30,10 +30,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class LessonListAcitivity extends AppCompatActivity {
-    ListView lvBaiGiang;
+    ListView listViewLesson;
     ImageView imvBack;
-    List<BaiGiang> mangBaiGiang;
-    Button btnThemBaiGiang;
+    List<Lesson> lessonArr;
+    Button btnAddLesson;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,9 +41,9 @@ public class LessonListAcitivity extends AppCompatActivity {
         // Get access token
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(this);
         String accessToken = preferences.getString("ACCESS_TOKEN",null);
-        String tenDangNhap = preferences.getString("TenDangNhap",null);
-        lvBaiGiang = (ListView) findViewById(R.id.listViewBaiGiang);
-        LayDanhSachBaiGiang("TenDangNhap",accessToken);
+        String username = preferences.getString("username",null);
+        listViewLesson = (ListView) findViewById(R.id.listView_lesson);
+        getLessonList(username,accessToken);
         imvBack = (ImageView) findViewById(R.id.imageViewBack);
         imvBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -51,44 +51,68 @@ public class LessonListAcitivity extends AppCompatActivity {
                 startActivity(new Intent(LessonListAcitivity.this,HomePageActivity.class));
             }
         });
-        btnThemBaiGiang = (Button) findViewById(R.id.btn_thembaigiang);
-        btnThemBaiGiang.setOnClickListener(new View.OnClickListener() {
+        btnAddLesson = (Button) findViewById(R.id.btn_addLesson);
+        btnAddLesson.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MyCustomDialog dialog = new MyCustomDialog();
+                AddLessonDialog dialog = new AddLessonDialog();
                 dialog.setContext(LessonListAcitivity.this);
                 dialog.show(getSupportFragmentManager(),"MyCustomFragment");
             }
         });
     }
 
-    private void LayDanhSachBaiGiang(String tenDangNhap, String accessToken) {
-        ApiService.apiService.LayDSBG(tenDangNhap,"Bearer "+accessToken).enqueue(new Callback <List<BaiGiang>>() {
+    private void getLessonList(String username, String accessToken) {
+        ApiService.apiService.getLessonList(username,"Bearer "+accessToken).enqueue(new Callback <List<Lesson>>() {
             @Override
-            public void onResponse(Call<List<BaiGiang>> call, Response<List<BaiGiang>> response) {
-                mangBaiGiang = new ArrayList<>();
-                mangBaiGiang = response.body();
-                BaiGiangAdapter adapter = new BaiGiangAdapter(
-                        LessonListAcitivity.this,R.layout.dong_bai_giang,mangBaiGiang
+            public void onResponse(Call<List<Lesson>> call, Response<List<Lesson>> response) {
+                lessonArr = new ArrayList<>();
+                lessonArr = response.body();
+                LessonAdapter adapter = new LessonAdapter(
+                        LessonListAcitivity.this,R.layout.line_lesson,lessonArr
                 );
-                lvBaiGiang.setAdapter(adapter);
+                listViewLesson.setAdapter(adapter);
                 adapter.notifyDataSetChanged();
-                lvBaiGiang.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                listViewLesson.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(LessonListAcitivity.this,""+mangBaiGiang.get(position).Ten,Toast.LENGTH_SHORT).show();
+                        String lessonID = ""+lessonArr.get(position).lessonID;
+                        Log.i("hahaha",lessonID);
+                        ApiService.apiService.getMarkerList(lessonID).enqueue(new Callback<GetMarkerListResponse>() {
+                            @Override
+                            public void onResponse(Call<GetMarkerListResponse> call, Response<GetMarkerListResponse> response) {
+                                Log.i("dkm",response.body().toString());
+                                GetMarkerListResponse getMarkerListResponse = response.body();
+                                if (getMarkerListResponse.getStatus().equals("success")){
+                                    List<Marker> markerList =getMarkerListResponse.getMarkerList();
+                                    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(LessonListAcitivity.this);
+                                    String listMarkerJsonString = new Gson().toJson(markerList);
+                                    preferences.edit().putString("markerlist",listMarkerJsonString).apply();
+                                    preferences.edit().commit();
+                                    startActivity(new Intent(LessonListAcitivity.this,LearnActivity.class));
+                                }
+                                else{
+                                    Toast.makeText(LessonListAcitivity.this,"Bài giảng không có nội dung",Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            @Override
+                            public void onFailure(Call<GetMarkerListResponse> call, Throwable t) {
+                                Toast.makeText(LessonListAcitivity.this,"Lỗi không xác định",Toast.LENGTH_SHORT).show();
+                            }
+                        });
+
                     }
                 });
 //                Toast.makeText(LessonListAcitivity.this,"Call Api sucess",Toast.LENGTH_SHORT).show();
             }
             @Override
-            public void onFailure(Call<List<BaiGiang>> call, Throwable t) {
-                Toast.makeText(LessonListAcitivity.this,"Call Api failed",Toast.LENGTH_SHORT).show();
+            public void onFailure(Call<List<Lesson>> call, Throwable t) {
+                Toast.makeText(LessonListAcitivity.this,"Lỗi không xác định",Toast.LENGTH_SHORT).show();
             }
         });
     }
 
-    public void ThemBaiGiang(BaiGiang baiGiang){
-        mangBaiGiang.add(baiGiang);
+    public void ThemBaiGiang(Lesson lesson){
+        lessonArr.add(lesson);
     }
 }

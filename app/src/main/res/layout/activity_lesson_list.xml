@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context=".LessonListAcitivity">
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layout_dsbg"
+        android:id="@+id/layout_lessonlist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -33,60 +33,17 @@
             android:layout_marginLeft="10dp"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
             <View
-                android:id="@+id/line_dsbg"
+                android:id="@+id/line_lessonlist"
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:background="#D0CBCB"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/layout_dsbg"
+                app:layout_constraintTop_toBottomOf="@id/layout_lessonlist"
                 android:layout_marginTop="30dp"
                 />
-<!--    <TextView-->
-<!--        android:id="@+id/tv_tenbaigiang"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/line_dsbg"-->
-<!--        android:layout_marginLeft="30dp"-->
-<!--        android:layout_marginTop="10dp"-->
-<!--        android:text="Tên bài giảng 1"-->
-<!--        android:textColor="@color/black"-->
-<!--        android:textSize="30dp"/>-->
-<!--    <TextView-->
-<!--        android:id="@+id/tv_tengiaovien"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:layout_constraintLeft_toLeftOf="@id/tv_tenbaigiang"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/tv_tenbaigiang"-->
-<!--        android:text="Tên giáo viên"-->
-<!--        android:textColor="@color/black"-->
-<!--        android:textSize="20dp"-->
-<!--        android:layout_marginTop="30dp"-->
-<!--        />-->
-<!--    <ImageView-->
-<!--        android:layout_width="40dp"-->
-<!--        android:layout_height="40dp"-->
-<!--        android:src="@drawable/ic_delete"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/tv_tenbaigiang"-->
-<!--        android:layout_marginRight="20dp"-->
-<!--        android:layout_marginTop="15dp"-->
-<!--        />-->
-<!--    <View-->
-<!--        android:id="@+id/line_tbg1"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="1dp"-->
-<!--        android:background="#D0CBCB"-->
-<!--        app:layout_constraintLeft_toLeftOf="parent"-->
-<!--        app:layout_constraintRight_toRightOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@id/tv_tengiaovien"-->
-<!--        android:layout_marginTop="5dp"-->
-<!--        android:layout_marginLeft="20dp"-->
-<!--        android:layout_marginRight="20dp"-->
-<!--        />-->
     <Button style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:id="@+id/btn_thembaigiang"
+        android:id="@+id/btn_addLesson"
         android:textColor="@color/white"
         app:strokeColor="@color/white"
         app:strokeWidth="2dp"
@@ -98,15 +55,17 @@
         android:layout_height="65dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/listViewBaiGiang"
+        app:layout_constraintTop_toBottomOf="@id/listView_lesson"
         android:backgroundTint="#4F83CC"
         android:layout_marginTop="10dp"
         />
     <ListView
-        android:id="@+id/listViewBaiGiang"
+        android:id="@+id/listView_lesson"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/line_dsbg"
+        app:layout_constraintTop_toBottomOf="@id/line_lessonlist"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>

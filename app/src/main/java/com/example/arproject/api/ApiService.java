@@ -1,13 +1,13 @@
 package com.example.arproject.api;
 
-import com.example.arproject.model.BaiGiang;
-import com.example.arproject.model.HocSinh;
-import com.example.arproject.requestModel.DangNhapRequest;
-import com.example.arproject.requestModel.ThemBaiGiangRequest;
-import com.example.arproject.responseModel.DangKyResponse;
-import com.example.arproject.responseModel.DangNhapResponse;
-import com.example.arproject.responseModel.LayDSBGResponse;
-import com.example.arproject.responseModel.ThemBaiGiangResponse;
+import com.example.arproject.model.Lesson;
+import com.example.arproject.model.Student;
+import com.example.arproject.requestModel.LoginRequest;
+import com.example.arproject.requestModel.AddLessonRequest;
+import com.example.arproject.responseModel.RegisterResponse;
+import com.example.arproject.responseModel.LoginResponse;
+import com.example.arproject.responseModel.GetMarkerListResponse;
+import com.example.arproject.responseModel.AddLessonResponse;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -17,8 +17,6 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
@@ -36,11 +34,14 @@ public interface ApiService {
 //    Call<NoiDungHoc> getNoiDungHoc();
 //@FormUrlEncoded
 @POST("signup/mobile")
-    Call<DangKyResponse> DangKy(@Body HocSinh hocSinh);
+    Call<RegisterResponse> Register(@Body Student student);
 @POST("login/mobile")
-    Call<DangNhapResponse> DangNhap(@Body DangNhapRequest dangNhapRequest);
+    Call<LoginResponse> Login(@Body LoginRequest loginRequest);
 @GET("/lesson")
-    Call<List<BaiGiang>> LayDSBG(@Query("TenDangNhap") String tenDangNhap, @Header("Authorization") String authorization);
+    Call<List<Lesson>> getLessonList(@Query("username") String username, @Header("Authorization") String authorization);
 @POST("/lesson")
-    Call<ThemBaiGiangResponse> ThemBaiGiang(@Body ThemBaiGiangRequest themBaiGiangRequest, @Header("Authorization") String authorization);
+    Call<AddLessonResponse> addLesson(@Body AddLessonRequest addLessonRequest, @Header("Authorization") String authorization);
+@GET("/lesson/marker")
+    Call<GetMarkerListResponse> getMarkerList(@Query("lessonID") String lessonID);
 }
+

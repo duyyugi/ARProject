@@ -1,9 +1,9 @@
 package com.example.arproject.responseModel;
 
-public class DangKyResponse {
+public class RegisterResponse {
     private String status;
 
-    public DangKyResponse(String status) {
+    public RegisterResponse(String status) {
         this.status = status;
     }
 

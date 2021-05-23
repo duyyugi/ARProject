@@ -11,7 +11,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"/>
     <TextView
-        android:id="@+id/txtThemBaiGiang"
+        android:id="@+id/txv_addLesson"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintLeft_toLeftOf="parent"
@@ -24,12 +24,12 @@
         />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/ti_code"
+        android:id="@+id/txi_lessonID"
         android:layout_width="250dp"
         android:layout_height="50dp"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/txtThemBaiGiang"
+        app:layout_constraintTop_toBottomOf="@id/txv_addLesson"
         app:boxBackgroundColor="@color/white"
         android:enabled="true"
         app:boxStrokeColor="@color/black"
@@ -39,7 +39,7 @@
         android:layout_marginTop="20dp"
         >
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/ed_code"
+            android:id="@+id/edt_lessonID"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:textColor="@color/black"
@@ -50,13 +50,13 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/ti_code"
+        app:layout_constraintTop_toBottomOf="@id/txi_lessonID"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="30dp"
     >
         <Button style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:id="@+id/btn_them"
+            android:id="@+id/btn_addLesson"
             android:textColor="@color/white"
             app:strokeColor="@color/white"
             app:strokeWidth="2dp"
@@ -70,7 +70,7 @@
             app:layout_constraintLeft_toLeftOf="parent"
             />
         <Button style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-            android:id="@+id/btn_huy"
+            android:id="@+id/btn_cancel"
             android:textColor="@color/white"
             app:strokeColor="@color/white"
             app:strokeWidth="2dp"
@@ -81,7 +81,7 @@
             android:layout_width="120dp"
             android:layout_height="60dp"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintLeft_toRightOf="@id/btn_them"
+            app:layout_constraintLeft_toRightOf="@id/btn_addLesson"
             app:layout_constraintRight_toRightOf="parent"
             android:layout_marginLeft="15dp"
             />
