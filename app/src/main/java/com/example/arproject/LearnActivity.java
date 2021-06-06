@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.StrictMode;
@@ -40,6 +41,7 @@ import com.google.ar.sceneform.Scene;
 import com.google.ar.sceneform.assets.RenderableSource;
 import com.google.ar.sceneform.math.Quaternion;
 import com.google.ar.sceneform.math.Vector3;
+import com.google.ar.sceneform.rendering.ExternalTexture;
 import com.google.ar.sceneform.rendering.ModelRenderable;
 import com.google.ar.sceneform.rendering.ViewRenderable;
 import com.google.gson.Gson;
@@ -95,13 +97,7 @@ public class LearnActivity extends AppCompatActivity implements Scene.OnUpdateLi
                 for (Marker marker: markerList){
                     if (marker.getMarkerID() == Integer.parseInt(image.getName()) && scanned == false){
                         Log.i("vc",""+marker.getMarkerID());
-                        String notification = "Đã phát hiện điểm đánh dấu " + image.getName();
-                        textView.setText(notification);
                         Anchor anchor = image.createAnchor(image.getCenterPose());
-                        // Get vi tri chinh giua
-                        // Huy noi dung truoc.
-                        // Hien thi het noi dung ra.
-                        // Neu hanh dong la khoi tao thi render noi dung + set ham tap de render cac hanh dong khac
                         List<Action> actionList = marker.getActionList();
                         for (Action action: actionList){
                             if (action.getName().equals("Khởi tạo")){
@@ -118,6 +114,8 @@ public class LearnActivity extends AppCompatActivity implements Scene.OnUpdateLi
                                     }
                                     else if(lastExtension=='g'){
                                         createImage(arContent,anchor,image);
+                                    } else if(lastExtension=='4'){
+                                        createVideo(arContent,anchor,image);
                                     }
                                 }
                             }
@@ -174,6 +172,8 @@ public class LearnActivity extends AppCompatActivity implements Scene.OnUpdateLi
                                             }
                                             else if(lastExtension=='g'){
                                                 createImage(arContent,anchor,image);
+                                            } else if(lastExtension == '4'){
+                                                createVideo(arContent,anchor,image);
                                             }
                                         }
                                     }
@@ -184,20 +184,7 @@ public class LearnActivity extends AppCompatActivity implements Scene.OnUpdateLi
                         scanned = true;
                     }
                 }
-                // get noi dung theo marker id
-                // Viet ham render theo action
-                // Lay noi dung tu diem danh dau
-                // Render action khoi tao
-                // Render may cai nut cho action
-
-
-                // render o day
-//                float[] translation = new float[]{0.00f,0f,0f};
-//                float[] rotation = new float[]{0f,0f,0f,1f};
-//                Pose pose = new Pose(translation,rotation);
                 Log.i("pose",image.getCenterPose().toString());
-//                Anchor anchor1 = image.createAnchor(image.getCenterPose());
-//                Anchor anchor2 = image.createAnchor(image.getCenterPose());
 
             }
         }
@@ -212,7 +199,7 @@ public class LearnActivity extends AppCompatActivity implements Scene.OnUpdateLi
                                 Uri.parse(arContent.getURL()),
                                 RenderableSource.SourceType.GLB)
                                 .setScale(1)
-                                .setRecenterMode(RenderableSource.RecenterMode.ROOT)
+                                .setRecenterMode(RenderableSource.RecenterMode.CENTER)
                                 .build())
                 .setRegistryId(arContent.getURL())
                 .build()
@@ -321,6 +308,31 @@ public class LearnActivity extends AppCompatActivity implements Scene.OnUpdateLi
         Bitmap bitmap = getBitmapFromURL(arContent.getURL());
         imvCustom.setImageBitmap(bitmap);
         anchorNode.setRenderable(viewRenderable);
+        anchorNodeArrayList.add(anchorNode);
+        arFragment.getArSceneView().getScene().addChild(anchorNode);
+    }
+    private void createVideo(ARContent arContent, Anchor anchor,AugmentedImage image){
+        AnchorNode anchorNode = setPropertyPixelAnchorNode(arContent,anchor,image);
+        textView.setText("haha");
+        ModelRenderable.builder()
+                .setSource(this,R.raw.chroma_key_video1)
+                .build()
+                .thenAccept(modelRenderable -> placeVideo(modelRenderable,anchorNode,arContent));
+    }
+
+    private void placeVideo(ModelRenderable modelRenderable, AnchorNode anchorNode, ARContent arContent) {
+        ExternalTexture texture = new ExternalTexture();
+        MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.videotest);
+        mediaPlayer.setSurface(texture.getSurface());
+        mediaPlayer.setLooping(true);
+        modelRenderable.getMaterial().setExternalTexture("videoTexture", texture);
+        modelRenderable.getMaterial().setFloat4("keyColor", new com.google.ar.sceneform.rendering.Color(0.01843f, 1.0f,0.098f));
+        anchorNode.setRenderable(modelRenderable);
+        float HEIGHT = 0.15f;
+        float width = mediaPlayer.getVideoWidth();
+        float height = mediaPlayer.getVideoHeight();
+
+        anchorNode.setLocalScale(new Vector3(HEIGHT * (width / height), HEIGHT, 0.95f));
         anchorNodeArrayList.add(anchorNode);
         arFragment.getArSceneView().getScene().addChild(anchorNode);
     }
